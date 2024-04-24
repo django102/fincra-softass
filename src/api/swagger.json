@@ -1,6 +1,51 @@
 {
 	"components": {
-		"schemas": {},
+		"schemas": {
+			"CreateUserRequest": {
+				"properties": {
+					"email": {
+						"format": "email",
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"required": [
+					"email",
+					"password",
+					"firstName",
+					"lastName",
+					"phoneNumber"
+				]
+			},
+			"LoginRequest": {
+				"properties": {
+					"email": {
+						"format": "email",
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"required": [
+					"email",
+					"password"
+				]
+			}
+		},
 		"securitySchemes": {
 			"bearerAuth": {
 				"scheme": "bearer",
@@ -44,6 +89,62 @@
 				"summary": "Run Health Check",
 				"tags": [
 					"Health"
+				]
+			}
+		},
+		"/user": {
+			"post": {
+				"operationId": "UserController.create",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUserRequest"
+							}
+						}
+					},
+					"description": "CreateUserRequest",
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "User Registration",
+				"tags": [
+					"User"
+				]
+			}
+		},
+		"/user/login": {
+			"post": {
+				"operationId": "UserController.login",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginRequest"
+							}
+						}
+					},
+					"description": "LoginRequest",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "User Login",
+				"tags": [
+					"User"
 				]
 			}
 		}
