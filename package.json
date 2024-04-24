@@ -1,7 +1,7 @@
 {
-  "name": "typescript-template",
-  "displayName": "Typescript Template",
-  "version": "0.0.0",
+  "name": "fincra-softass",
+  "displayName": "Fincra Software Assignment",
+  "version": "1.0.0",
   "main": "src/app.ts",
   "repository": "https://github.com/django102/typescript-template.git",
   "author": "Wale K. Santos <eighteen.eighty.one@outlook.com>",

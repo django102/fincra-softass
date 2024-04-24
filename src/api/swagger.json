@@ -10,9 +10,27 @@
 		}
 	},
 	"info": {
-		"title": "Typescript Template",
-		"version": "0.0.0"
+		"title": "Fincra Software Assignment",
+		"version": "1.0.0"
 	},
 	"openapi": "3.0.0",
-	"paths": {}
+	"paths": {
+		"/health": {
+			"post": {
+				"operationId": "HealthController.healthCheck",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Run Health Check",
+				"tags": [
+					"Health"
+				]
+			}
+		}
+	}
 }

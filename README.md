@@ -1,4 +1,4 @@
-# typescript-template
+# fincra-softass
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE.)
 &nbsp;
@@ -8,7 +8,7 @@
 
 &nbsp;
 
-### Typescript Template with w3tec Microframework
+### Fincra Software Assignment
 
 &nbsp;
 
