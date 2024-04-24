@@ -1,15 +1,21 @@
-import { JsonController, Post } from "routing-controllers";
+import { Get, JsonController, Post } from "routing-controllers";
 import { OpenAPI } from "routing-controllers-openapi";
 
 import IResponse from "../interfaces/IResponse";
 import { SuccessResponse } from "../responses";
 
 
-@OpenAPI({ summary: "Run Health Check" })
 @JsonController("/health")
 export default class HealthController {
-  @Post()
-    public async healthCheck( ): Promise<IResponse> {
+    @OpenAPI({ summary: "Run Health Check" })
+    @Post()
+    public async healthCheckPost( ): Promise<IResponse> {
+        return Promise.resolve(new SuccessResponse("Applicaton is running"));
+    }
+
+    @OpenAPI({ summary: "Run Health Check" })
+    @Get()
+    public async healthCheckGet( ): Promise<IResponse> {
         return Promise.resolve(new SuccessResponse("Applicaton is running"));
     }
 }

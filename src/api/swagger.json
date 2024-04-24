@@ -17,7 +17,22 @@
 	"paths": {
 		"/health": {
 			"post": {
-				"operationId": "HealthController.healthCheck",
+				"operationId": "HealthController.healthCheckPost",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Run Health Check",
+				"tags": [
+					"Health"
+				]
+			},
+			"get": {
+				"operationId": "HealthController.healthCheckGet",
 				"responses": {
 					"200": {
 						"content": {
