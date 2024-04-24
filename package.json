@@ -1,0 +1,117 @@
+{
+  "name": "typescript-template",
+  "displayName": "Typescript Template",
+  "version": "0.0.0",
+  "main": "src/app.ts",
+  "repository": "https://github.com/django102/typescript-template.git",
+  "author": "Wale K. Santos <eighteen.eighty.one@outlook.com>",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "nps": "cross-env NODE_ENV=development nps",
+    "serve": "cross-env NODE_ENV=development nps serve",
+    "test": "cross-env NODE_ENV=test nps test",
+    "testAndWatch": "cross-env NODE_ENV=test nps 'test --watchAll'",
+    "build": "nps build",
+    "lint": "nps lint",
+    "prepare": "husky install",
+    "deploy": "yarn install && yarn run build",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "create-migration": "yarn run typeorm migration:generate  -d ./src/database/migrationConnection.ts ./src/database/migrations/mysql/$npm_config_name",
+    "migrate": "yarn run typeorm -d ./src/database/migrationConnection.ts migration:run",
+    "revert-migration": "yarn run typeorm -d ./src/database/migrationConnection.ts migration:revert",
+    "show-migration": "yarn run typeorm -d ./src/database/migrationConnection.ts migration:show"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "keywords": [
+    "NodeJS",
+    "TypeScript",
+    "express",
+    "template"
+  ],
+  "dependencies": {
+    "@types/node": "^20.11.16",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "bcryptjs": "^2.4.3",
+    "chance": "^1.1.11",
+    "class-transformer": "^0.5.0",
+    "class-validator": "^0.14.1",
+    "class-validator-jsonschema": "^4.0.0",
+    "compression": "^1.7.4",
+    "copyfiles": "^2.4.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "event-dispatch": "^0.4.1",
+    "express": "^4.18.2",
+    "figlet": "^1.7.0",
+    "glob": "^7.1.6",
+    "hot-shots": "^8.3.2",
+    "istanbul": "^0.4.5",
+    "jest": "^29.7.0",
+    "jsonfile": "^6.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "microframework-w3tec": "^0.6.3",
+    "moment": "^2.30.1",
+    "mongodb-memory-server": "^9.1.8",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.9.2",
+    "nodemon": "^3.0.3",
+    "nps": "^5.10.0",
+    "nps-utils": "^1.7.0",
+    "prom-client": "^15.1.0",
+    "redis": "3.1.2",
+    "routing-controllers": "^0.10.1",
+    "routing-controllers-openapi": "^4.0.0",
+    "supertest": "^6.3.4",
+    "swagger-autogen": "^2.23.7",
+    "swagger-stats": "^0.99.7",
+    "swagger-ui-express": "^5.0.0",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "typedi": "^0.8.0",
+    "typeorm": "^0.3.6",
+    "typescript": "5.3.3",
+    "winston": "^3.11.0",
+    "yarn": "^1.22.21"
+  },
+  "devDependencies": {
+    "@types/figlet": "^1.5.8",
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin-tslint": "^6.20.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^32.3.0",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "husky": "^8.0.0",
+    "pre-commit": "^1.2.2",
+    "ts-jest": "^29.1.2"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "rootDir": ".",
+    "testRegex": "./test/.*test.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/utils/test/setup.ts"
+    ]
+  }
+}

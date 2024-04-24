@@ -1,0 +1,155 @@
+name: Pre-Merge Tasks
+
+on:
+    pull_request:
+      branches:
+        - main
+        - staging
+
+jobs:
+    verify-version-upgrade:
+        runs-on: ubuntu-latest
+        name: Verify Version Upgrade
+        steps:
+            - uses: actions/checkout@v4
+          
+            - name: Get changed files
+              id: changed-files
+              uses: tj-actions/changed-files@v42
+          
+            - name: Check if package.json and swagger.json was changed
+              run: |
+                declare -A files
+                for file in ${{ steps.changed-files.outputs.all_changed_files }}
+                do
+                    files[$file]=1
+                done
+          
+                if [[ -v files['package.json'] ]] ; then
+                    echo "package.json was updated"
+                else
+                    echo "package.json was not updated! Please, update and increase the version"
+                    exit 1
+                fi
+          
+                if [[ -v files['src/api/swagger.json'] ]] ; then
+                    echo "swagger.json was updated"
+                else
+                    echo "swagger.json was not updated! Please, update and increase the version"
+                    exit 1
+                fi
+    
+    run-test:
+        runs-on: ubuntu-latest
+        name: Run Unit Tests                    
+        services:
+            mysql:
+                image: mysql:8.0.29
+                env:
+                    MYSQL_ROOT_HOST: "%"
+                    MYSQL_DATABASE: x
+                    MYSQL_ROOT_PASSWORD: rpass
+                    MYSQL_USER: admin
+                    MYSQL_PASSWORD: pass
+                ports:
+                    - "3306:3306"
+                options: >-
+                    --health-cmd "mysqladmin ping -ppass"
+                    --health-interval 10s
+                    --health-start-period 10s
+                    --health-timeout 5s
+                    --health-retries 10
+ 
+            redis:
+                # Docker Hub image
+                image: redis
+                # Set health checks to wait until redis has started
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    # Maps port 6379 on service container to the host
+                    - 6379:6379                    
+
+        steps:
+            - uses: actions/checkout@v4
+            - run: git fetch --no-tags --prune --depth=1 origin
+            - name: Run node 20
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20.10.0
+            #   - run: npm config set //npm.pkg.github.com/:_authToken ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+            #     id: setup-personal-access-token
+                
+                
+            - run: npm install yarn -g
+            - name: Cache node modules
+              uses: actions/cache@v4
+              with:
+                path: node_modules
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+                restore-keys: |
+                    ${{ runner.os }}-node-
+            - run: yarn --frozen-lockfile
+            - run: yarn test 
+              env:
+                # APPLICATION
+                NODE_ENV: "test"
+                APP_SCHEMA: http
+                APP_HOST: localhost
+                PORT: 3000
+                APP_EXPOSED_PORT: 3000
+                
+                # LOGGING
+                LOG_LEVEL: debug
+                LOG_OUTPUT: dev
+                
+                # MongoDb DATABASE
+                DB_CONNECTION: mongodb
+                DB_USERNAME: t
+                DB_PASSWORD: t
+                DB_HOST: localhost
+                DB_URL: "mongodb://localhost"
+                DB_PORT: 27017
+                DB_DATABASE: x
+                
+                # MySQL DATABASE
+                TYPEORM_CONNECTION: mysql
+                TYPEORM_USERNAME: admin
+                TYPEORM_PASSWORD: pass
+                TYPEORM_HOST: localhost
+                TYPEORM_PORT: 3306
+                TYPEORM_DATABASE: x
+                
+                # Path Structure
+                # DB_SYNCHRONIZE:false
+                DB_LOGGING: error
+                # DB_LOGGER: advanced-console
+                # DB_MIGRATIONS: src/database/migrations/**/*.ts
+                # DB_MIGRATIONS_DIR: src/database/migrations
+                # DB_ENTITIES: src/api/models/**/*.ts
+                # DB_ENTITIES_DIR: src/api/models
+                DB_DISABLED: true
+                
+                TYPEORM_SYNCHRONIZE: false
+                TYPEORM_LOGGING: error
+                TYPEORM_LOGGER: advanced-console
+                TYPEORM_MIGRATIONS: src/database/migrations/mysql/**/*.ts
+                TYPEORM_MIGRATIONS_DIR: src/database/migrations/mysql
+                TYPEORM_ENTITIES: src/api/models/mysql/**/*.ts
+                TYPEORM_ENTITIES_DIR: src/api/models/mysql
+                TYPEORM_DISABLED: false
+
+                # Redis
+                REDIS_CLUSTER_IP: localhost
+                REDIS_PORT: 6379
+                REDIS_USER: x
+                REDIS_PASSWORD: x
+                
+                # Swagger
+                SWAGGER_ENABLED: true
+                SWAGGER_ROUTE: /swagger
+                SWAGGER_FILE: api/swagger.json
+                SWAGGER_STATS_ROUTE: /swagger-stats/ui
