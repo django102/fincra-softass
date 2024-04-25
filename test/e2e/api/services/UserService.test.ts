@@ -4,11 +4,13 @@ import { UserRepository } from "../../../../src/api/repositories/UserRepository"
 import AuthenticationService from "../../../../src/api/services/AuthenticationService";
 import UserService from "../../../../src/api/services/UserService";
 import UtilityService from "../../../../src/api/services/UtilityService";
+import WalletService from "../../../../src/api/services/WalletService";
 import UserServiceMock from "../../../../test/mocks/services/UserServiceMock";
 
 describe("UserService", () => {
     let userService: UserService;
     let authenticationService: AuthenticationService;
+    let walletService: WalletService;
 
     const mockUser: User = {
         id: 1,
@@ -23,6 +25,7 @@ describe("UserService", () => {
     beforeAll(()=>{
         userService = UserServiceMock.getInstance();
         authenticationService = UserServiceMock.authenticationService;
+        walletService = UserServiceMock.walletService;
     });
 
     afterEach(()=>{
@@ -40,10 +43,12 @@ describe("UserService", () => {
 
     describe("create", ()=>{
         let createUserMock : jest.SpyInstance;
+        let createWalletMock : jest.SpyInstance;
         let finduserByEmailMock : jest.SpyInstance;
 
         beforeEach(()=>{
             createUserMock = jest.spyOn(UserRepository, "create");
+            createWalletMock = jest.spyOn(walletService, "createWallet");
             finduserByEmailMock = jest.spyOn(UserRepository, "findByEmail");
         });
 
@@ -52,10 +57,12 @@ describe("UserService", () => {
         it("should create a user successfully", async () => {
             createUserMock.mockResolvedValue(resolvedCreateduser);
             finduserByEmailMock.mockResolvedValue(null);
+            createWalletMock.mockResolvedValue({});
 
             const createduser = await userService.create(mockUser);
 
             expect(createUserMock).toHaveBeenCalledTimes(1);
+            expect(createWalletMock).toHaveBeenCalledTimes(1);
             expect(finduserByEmailMock).toHaveBeenCalledTimes(1);
             expect(createduser.code).toEqual(ResponseStatus.CREATED);
             expect(createduser.data).toEqual(resolvedCreateduser);
@@ -68,6 +75,7 @@ describe("UserService", () => {
             const createduser = await userService.create(mockUser);
 
             expect(createUserMock).toHaveBeenCalledTimes(0);
+            expect(createWalletMock).toHaveBeenCalledTimes(0);
             expect(finduserByEmailMock).toHaveBeenCalledTimes(1);
             expect(createduser.code).toEqual(ResponseStatus.BAD_REQUEST);
         });
@@ -79,6 +87,7 @@ describe("UserService", () => {
             const createduser = await userService.create(mockUser);
 
             expect(createUserMock).toHaveBeenCalledTimes(1);
+            expect(createWalletMock).toHaveBeenCalledTimes(0);
             expect(finduserByEmailMock).toHaveBeenCalledTimes(1);
             expect(createduser.code).toEqual(ResponseStatus.INTERNAL_SERVER_ERROR);
             expect(createduser.data).toBeUndefined();

@@ -8,11 +8,11 @@ export const UserRepository = dataSource.getRepository(User).extend({
     },
 
     async findByEmail(email: string): Promise<User> {
-        return this.findOne({ where: { email } });
+        return this.findOne({ where: { email }, relations: { wallets: true } });
     },
 
     async findById(id: number): Promise<User> {
-        return this.findOne({ where: { id } });
+        return this.findOne({ where: { id }, relations: { wallets: true } });
     },
 
     async updateUser(

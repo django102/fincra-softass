@@ -31,6 +31,6 @@ export default class Wallet {
   })
   public updatedAt?: Date;
 
-  @ManyToOne(() => User)
-  public user?: User;
+  @ManyToOne(() => User, (user) => user.wallets)
+      user: User;
 }

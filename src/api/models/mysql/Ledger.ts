@@ -20,6 +20,9 @@ export default class Ledger {
       nullable: false,
   })
   public transactionType: TransactionType;
+
+  @Column()
+  public description: string;
   
   @Column({
       default: 0.00,
@@ -32,12 +35,12 @@ export default class Ledger {
   public debit?: number;
  
   @Column({
-      default: true,
+      default: false,
   })
   public isReversed?: boolean;
 
   @Column({
-      default: true,
+      default: false,
   })
   public isDeleted?: boolean;
   

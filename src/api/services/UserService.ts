@@ -9,12 +9,14 @@ import { ServiceResponse } from "../responses";
 import AuthenticationService from "./AuthenticationService";
 import BaseService from "./BaseService";
 import UtilityService from "./UtilityService";
+import WalletService from "./WalletService";
 
 @Service()
 export default class UserService extends BaseService {
     constructor(
         private log: Logger,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private walletService: WalletService
     ) {
         super();
     }
@@ -32,7 +34,9 @@ export default class UserService extends BaseService {
             const userRequest = { email, password: hashedPassword, firstName, lastName, phoneNumber };
 
             const user = await UserRepository.create(userRequest);
-
+            await this.walletService.createWallet(user.id);
+            
+            
             // Process to send welcome emails
 
             return ServiceResponse.success("User Registration Successful", user, null, ResponseStatus.CREATED);

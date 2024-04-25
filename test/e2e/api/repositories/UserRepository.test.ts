@@ -43,7 +43,7 @@ describe("UserRepository", () => {
             const email = "example@example.com";
             const foundUser = await UserRepository.findByEmail(email);
 
-            expect(findOneMock).toHaveBeenCalledWith({ where: { email } });
+            expect(findOneMock).toHaveBeenCalledWith({ where: { email }, relations: { wallets: true } });
             expect(foundUser).toEqual(mockUser);
         });
     });
@@ -56,7 +56,7 @@ describe("UserRepository", () => {
             const id = 1;
             const foundUser = await UserRepository.findById(id);
 
-            expect(findOneMock).toHaveBeenCalledWith({ where: { id } });
+            expect(findOneMock).toHaveBeenCalledWith({ where: { id }, relations: { wallets: true } });
             expect(foundUser).toEqual(mockUser);
         });
     });

@@ -29,7 +29,7 @@ export default class UtilityService {
             return "";
         }
 
-        const randomString = chance.string({ length, casing, alpha: true, numeric: true });
+        const randomString = chance.string({ length, casing, alpha: casing === CharacterCasing.NUMERIC ? false : true, numeric: true });
         return randomString;
     }
 }

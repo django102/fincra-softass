@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
+import Wallet from "./Wallet";
 
 @Entity({ name: "users" })
 export default class User {
@@ -32,4 +34,7 @@ export default class User {
       nullable: true
   })
   public updatedAt?: Date;
+
+  @OneToMany(() => Wallet, (wallet) => wallet.userId)
+  public wallets?: Wallet[];
 }
