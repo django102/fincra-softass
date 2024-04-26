@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE.)
 &nbsp;
-[![Version: v1.0.0](https://img.shields.io/badge/fincra-softass-v1.0.0-blue?style=flat&logo=money)](CHANGELOG.md)
+[![Version: v1.0.0](https://img.shields.io/badge/Fincra_Software_Assessment-v1.0.0-blue?style=flat&logo=money)](CHANGELOG.md)
 &nbsp;
 
 
