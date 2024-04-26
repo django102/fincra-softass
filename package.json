@@ -3,7 +3,7 @@
   "displayName": "Fincra Software Assessment",
   "version": "1.0.0",
   "main": "src/app.ts",
-  "repository": "https://github.com/django102/typescript-template.git",
+  "repository": "https://github.com/django102/fincra-softass.git",
   "author": "Wale K. Santos <eighteen.eighty.one@outlook.com>",
   "license": "Apache-2.0",
   "private": true,

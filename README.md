@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE.)
 &nbsp;
-[![Version: v0.0.0](https://img.shields.io/badge/typescript_template-v0.0.0-blue?style=flat&logo=money)](CHANGELOG.md)
+[![Version: v1.0.0](https://img.shields.io/badge/fincra-softass-v1.0.0-blue?style=flat&logo=money)](CHANGELOG.md)
 &nbsp;
 
 
@@ -123,7 +123,7 @@ You don't necessarily need to write your own scripts as running the `create-migr
 
 ### Running
 
-- `cd` into your new `typescript-template` directory
+- `cd` into your new `fincra-softass` directory
 - Install the peer dependencies
 
   ```bash
