@@ -160,6 +160,10 @@ export default class WalletService extends BaseService {
                 return ServiceResponse.error("Source wallet does not exist", ResponseStatus.BAD_REQUEST);
             }
 
+            if(sourceAccountNumber === destinationAccountNumber) {
+                return ServiceResponse.error("Source wallet and destination wallet cannot be the same", ResponseStatus.BAD_REQUEST);
+            }
+
             const destinationWallet = await WalletRepository.findByAccountNumber(destinationAccountNumber);
             if(!destinationWallet) {
                 return ServiceResponse.error("Destination wallet does not exist", ResponseStatus.BAD_REQUEST);

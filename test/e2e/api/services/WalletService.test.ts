@@ -293,6 +293,20 @@ describe("WalletService", () => {
             expect(response.data).toBeUndefined();
         });
 
+        it("should fail if both source and destination wallets are the same", async () => {
+            const getWalletMock = jest.spyOn(WalletRepository, "findByAccountNumber").mockResolvedValueOnce(wallet1).mockResolvedValueOnce(wallet2);
+            const getBalanceMock = jest.spyOn(ledgerService, "getAccountBalance").mockResolvedValue(balance);
+            const addEntryMock = jest.spyOn(ledgerService, "addLedgerEntry").mockResolvedValue([ledger, ledger]);
+
+            const response = await walletService.transferBetweenWallets(wallet1.accountNumber, wallet1.accountNumber, 20000);
+
+            expect(getWalletMock).toHaveBeenCalledTimes(1);
+            expect(getBalanceMock).not.toHaveBeenCalled();
+            expect(addEntryMock).not.toHaveBeenCalled();
+            expect(response.code).toEqual(ResponseStatus.BAD_REQUEST);
+            expect(response.data).toBeUndefined();
+        });
+
         it("should throw an error while transfering between wallets", async () => {
             const getWalletMock = jest.spyOn(WalletRepository, "findByAccountNumber").mockResolvedValueOnce(wallet1).mockResolvedValueOnce(wallet2);
             const getBalanceMock = jest.spyOn(ledgerService, "getAccountBalance").mockResolvedValue(balance);
