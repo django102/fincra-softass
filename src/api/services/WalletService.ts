@@ -117,7 +117,7 @@ export default class WalletService extends BaseService {
             // You can check any account limits for the wallet whenever they are implemented
 
             const walletBalance = await this.ledgerService.getAccountBalance(accountNumber);
-            if(amount < walletBalance.availableBalance) {
+            if(walletBalance.availableBalance < amount) {
                 return ServiceResponse.error("Insufficient funds", ResponseStatus.BAD_REQUEST);
             }
 
@@ -154,45 +154,50 @@ export default class WalletService extends BaseService {
     }
 
     public async transferBetweenWallets(sourceAccountNumber: string, destinationAccountNumber: string, amount): Promise<ServiceResponse> {
-        const sourceWallet = await WalletRepository.findByAccountNumber(sourceAccountNumber);
-        if(!sourceWallet) {
-            return ServiceResponse.error("Source wallet does not exist", ResponseStatus.BAD_REQUEST);
+        try {
+            const sourceWallet = await WalletRepository.findByAccountNumber(sourceAccountNumber);
+            if(!sourceWallet) {
+                return ServiceResponse.error("Source wallet does not exist", ResponseStatus.BAD_REQUEST);
+            }
+
+            const destinationWallet = await WalletRepository.findByAccountNumber(destinationAccountNumber);
+            if(!destinationWallet) {
+                return ServiceResponse.error("Destination wallet does not exist", ResponseStatus.BAD_REQUEST);
+            }
+
+            const sourceWalletBalance = await this.ledgerService.getAccountBalance(sourceAccountNumber);
+            if(sourceWalletBalance.availableBalance < amount) {
+                return ServiceResponse.error("Insufficient funds", ResponseStatus.BAD_REQUEST);
+            }
+
+
+            const reference = moment().format("yyyyMMddHHmmss");
+
+            const creditLedgerEntry: Ledger = {
+                accountNumber: destinationAccountNumber,
+                credit: amount,
+                debit: 0,
+                description: `Transfer between accounts -  ${sourceAccountNumber} >> ${destinationAccountNumber}`,
+                reference,
+                transactionType: TransactionType.WALLET_TRANSFER
+            };
+
+            const debitLedgerEntry: Ledger = {
+                accountNumber: sourceAccountNumber,
+                credit: 0,
+                debit: amount,
+                description: `Transfer between accounts -  ${sourceAccountNumber} >> ${destinationAccountNumber}`,
+                reference,
+                transactionType: TransactionType.WALLET_TRANSFER
+            };
+
+            await this.ledgerService.addLedgerEntry([creditLedgerEntry, debitLedgerEntry]);
+
+            return ServiceResponse.success("Wallet transfer successful");
+        } catch (err) {
+            this.log.error("Could not transfer funds between wallets", { err });
+            return ServiceResponse.error(`Could not transfer funds between wallets: ${err}`);
         }
-
-        const destinationWallet = await WalletRepository.findByAccountNumber(destinationAccountNumber);
-        if(!destinationWallet) {
-            return ServiceResponse.error("Destination wallet does not exist", ResponseStatus.BAD_REQUEST);
-        }
-
-        const sourceWalletBalance = await this.ledgerService.getAccountBalance(sourceAccountNumber);
-        if(amount < sourceWalletBalance.availableBalance) {
-            return ServiceResponse.error("Insufficient funds", ResponseStatus.BAD_REQUEST);
-        }
-
-
-        const reference = moment().format("yyyyMMddHHmmss");
-
-        const creditLedgerEntry: Ledger = {
-            accountNumber: destinationAccountNumber,
-            credit: amount,
-            debit: 0,
-            description: `Transfer between accounts -  ${sourceAccountNumber} >> ${destinationAccountNumber}`,
-            reference,
-            transactionType: TransactionType.WALLET_TRANSFER
-        };
-
-        const debitLedgerEntry: Ledger = {
-            accountNumber: sourceAccountNumber,
-            credit: 0,
-            debit: amount,
-            description: `Transfer between accounts -  ${sourceAccountNumber} >> ${destinationAccountNumber}`,
-            reference,
-            transactionType: TransactionType.WALLET_TRANSFER
-        };
-
-        await this.ledgerService.addLedgerEntry([creditLedgerEntry, debitLedgerEntry]);
-
-        return ServiceResponse.success("Wallet transfer successful");
     }
 
     // implement transfer to other banks and payment of bills

@@ -112,6 +112,25 @@ describe("UtilityService", () => {
                 numeric: true,
             });
         });
+
+        it("should generate only a numeric string", () => {
+            const mockRandomString = "0000012431";
+            jest.spyOn(Chance.prototype, "string").mockImplementation(() => {    
+                return mockRandomString;
+            }); 
+    
+            const length = 10;
+            const casing = CharacterCasing.NUMERIC;
+            const randomString = UtilityService.generateRandomString(length, casing);
+    
+            expect(randomString).toBe(mockRandomString);
+            expect(Chance.prototype.string).toHaveBeenCalledWith({
+                length,
+                casing,
+                alpha: false,
+                numeric: true,
+            });
+        });
     
         it("should return an empty string for negative length", () => {
             const randomString = UtilityService.generateRandomString(-5);

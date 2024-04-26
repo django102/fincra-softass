@@ -8,7 +8,7 @@ export const LedgerRepository = dataSource.getRepository(Ledger).extend({
         return this.save(ledger);
     },
 
-    async addEntries(ledgers: Ledger[]): Promise<Ledger[]> {
+    async addEntries(ledgers: Partial<Ledger>[]): Promise<Ledger[]> {
         return this.save(ledgers);
     },
 

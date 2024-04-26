@@ -1,5 +1,6 @@
 import moment from "moment";
 
+import DateFilter from "../../../../src/api/models/DateFilter";
 import { LedgerRepository } from "../../../../src/api/repositories/LedgerRepository";
 
 describe("LedgerRepository", () => {
@@ -55,9 +56,9 @@ describe("LedgerRepository", () => {
             const saveMock = jest.fn().mockResolvedValue(mockLedgerEntry);
             LedgerRepository.save = saveMock;
 
-            const ledgerEntry = await LedgerRepository.addEntry(mockLedgerEntry);
+            const ledgerEntry = await LedgerRepository.addEntries([mockLedgerEntry]);
 
-            expect(saveMock).toHaveBeenCalledWith(mockLedgerEntry);
+            expect(saveMock).toHaveBeenCalledWith([mockLedgerEntry]);
             expect(ledgerEntry).toEqual(mockLedgerEntry);
         });
     });
@@ -93,7 +94,7 @@ describe("LedgerRepository", () => {
         it("should get ledger balance for account with date filter", async () => {
             const transHistory = [mockLedgerEntry, mockLedgerEntry];
 
-            const dateFilter = {
+            const dateFilter: DateFilter = {
                 startDate: moment().format("yyyy-MM-dd"),
                 endDate: moment().format("yyyy-MM-dd")
             };
