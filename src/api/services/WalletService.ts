@@ -81,7 +81,7 @@ export default class WalletService extends BaseService {
 
             // You can check any account limits for the wallet whenever they are implemented
 
-            const reference = moment().format("yyyyMMddHHmmss");
+            const reference = moment().format("yyyyMMDDHHmmssSSSSSS");
 
             const creditLedgerEntry: Ledger = {
                 accountNumber,
@@ -124,7 +124,7 @@ export default class WalletService extends BaseService {
                     return ServiceResponse.error("Insufficient funds", ResponseStatus.BAD_REQUEST);
                 }
 
-                const reference = moment().format("yyyyMMddHHmmss");
+                const reference = moment().format("yyyyMMDDHHmmssSSSSSS");
 
                 const debitLedgerEntry: Ledger = {
                     accountNumber,
@@ -180,7 +180,7 @@ export default class WalletService extends BaseService {
                 }
     
     
-                const reference = moment().format("yyyyMMddHHmmss");
+                const reference = moment().format("yyyyMMDDHHmmssSSSSSS");
     
                 const creditLedgerEntry: Ledger = {
                     accountNumber: destinationAccountNumber,
