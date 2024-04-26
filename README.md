@@ -8,7 +8,7 @@
 
 &nbsp;
 
-### Fincra Software Assignment
+### Fincra Software Assessment
 
 &nbsp;
 

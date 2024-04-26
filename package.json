@@ -1,6 +1,6 @@
 {
   "name": "fincra-softass",
-  "displayName": "Fincra Software Assignment",
+  "displayName": "Fincra Software Assessment",
   "version": "1.0.0",
   "main": "src/app.ts",
   "repository": "https://github.com/django102/typescript-template.git",
