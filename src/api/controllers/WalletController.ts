@@ -88,7 +88,7 @@ export default class WalletController {
         return Promise.resolve(new SuccessResponse(response.message, response.data));
     }
 
-    @OpenAPI({ summary: "Transfer Between Wallet", security: [{ bearerAuth: [] }] })
+    @OpenAPI({ summary: "Transfer Between Wallets", security: [{ bearerAuth: [] }] })
     @Authorized()
     @Post("/transfer")
     public async transferBetweenWallets(
