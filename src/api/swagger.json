@@ -44,6 +44,40 @@
 					"email",
 					"password"
 				]
+			},
+			"WalletRequest": {
+				"properties": {
+					"accountNumber": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number"
+					}
+				},
+				"type": "object",
+				"required": [
+					"accountNumber",
+					"amount"
+				]
+			},
+			"WalletTransferRequest": {
+				"properties": {
+					"destinationAccountNumber": {
+						"type": "string"
+					},
+					"accountNumber": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number"
+					}
+				},
+				"type": "object",
+				"required": [
+					"destinationAccountNumber",
+					"accountNumber",
+					"amount"
+				]
 			}
 		},
 		"securitySchemes": {
@@ -145,6 +179,160 @@
 				"summary": "User Login",
 				"tags": [
 					"User"
+				]
+			}
+		},
+		"/wallet": {
+			"post": {
+				"operationId": "WalletController.createWallet",
+				"responses": {
+					"201": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Create Wallet",
+				"tags": [
+					"Wallet"
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/wallet/{accountNumber}": {
+			"get": {
+				"operationId": "WalletController.getWallet",
+				"parameters": [
+					{
+						"in": "path",
+						"name": "accountNumber",
+						"required": true,
+						"schema": {
+							"pattern": "[^\\/#\\?]+?",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Get Wallet",
+				"tags": [
+					"Wallet"
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/wallet/fund": {
+			"post": {
+				"operationId": "WalletController.fundWallet",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/WalletRequest"
+							}
+						}
+					},
+					"description": "WalletRequest",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Fund Wallet",
+				"tags": [
+					"Wallet"
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/wallet/withdraw": {
+			"post": {
+				"operationId": "WalletController.withdrawFromWallet",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/WalletRequest"
+							}
+						}
+					},
+					"description": "WalletRequest",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Withdraw From Wallet",
+				"tags": [
+					"Wallet"
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/wallet/transfer": {
+			"post": {
+				"operationId": "WalletController.transferBetweenWallets",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/WalletTransferRequest"
+							}
+						}
+					},
+					"description": "WalletTransferRequest",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Transfer Between Wallet",
+				"tags": [
+					"Wallet"
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					}
 				]
 			}
 		}
