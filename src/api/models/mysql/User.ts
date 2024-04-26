@@ -35,6 +35,6 @@ export default class User {
   })
   public updatedAt?: Date;
 
-  @OneToMany(() => Wallet, (wallet) => wallet.userId)
+  @OneToMany(() => Wallet, (wallet) => wallet.user)
   public wallets?: Wallet[];
 }
