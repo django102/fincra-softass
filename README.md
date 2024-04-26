@@ -91,7 +91,7 @@ This respository is available as open source under the terms of the [Apache 2.0 
 
 ## Cloning the Repository
 Open your Terminal, and type:
-`$ git clone https://github.com/django102/typescript-template.git`
+`$ git clone https://github.com/django102/fincra-softass.git`
 
 
 ## Commands
