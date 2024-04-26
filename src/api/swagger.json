@@ -126,6 +126,38 @@
 				]
 			}
 		},
+		"/ping": {
+			"post": {
+				"operationId": "HealthController.healthCheckPost",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Ping",
+				"tags": [
+					"Health"
+				]
+			},
+			"get": {
+				"operationId": "HealthController.healthCheckGet",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Successful response"
+					}
+				},
+				"summary": "Ping",
+				"tags": [
+					"Health"
+				]
+			}
+		},
 		"/user": {
 			"post": {
 				"operationId": "UserController.create",
