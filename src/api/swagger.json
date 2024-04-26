@@ -128,7 +128,7 @@
 		},
 		"/ping": {
 			"post": {
-				"operationId": "HealthController.healthCheckPost",
+				"operationId": "PingController.healthCheckPost",
 				"responses": {
 					"200": {
 						"content": {
@@ -139,11 +139,11 @@
 				},
 				"summary": "Ping",
 				"tags": [
-					"Health"
+					"Ping"
 				]
 			},
 			"get": {
-				"operationId": "HealthController.healthCheckGet",
+				"operationId": "PingController.healthCheckGet",
 				"responses": {
 					"200": {
 						"content": {
@@ -154,7 +154,7 @@
 				},
 				"summary": "Ping",
 				"tags": [
-					"Health"
+					"Ping"
 				]
 			}
 		},
